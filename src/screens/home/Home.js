@@ -10,20 +10,12 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-//import Header from '../../common/header/Header';
+import Header from '../../common/header/Header';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import hearticon from '../../assets/icon/hearticon.svg';
-
-
-
-//import hearticon_black from '../../assets/icon/hearticon_black.svg';
-
-/*Imported all necessary files and components */
-
-/* Defined classes styles for all relevant imported components */
 
 const styles = theme => ({
     root: {
@@ -51,13 +43,9 @@ const styles = theme => ({
     gridListMain: {
         transform: 'translateZ(0)',
         cursor: 'pointer',
-        
-        },
-        
-    
+
+    },
 });
-
-
 
 /*Class component Home defined with constructor & it's states */
 
@@ -66,19 +54,13 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            unixDateTimestamp: [],
             ownerInfo: [],
             mediaInfo: [],
-            isHeartIconSelected :false,
+            anchorEl:null,
             imagecomment:"",
             addComment:"dispComment",
-           
-            
-
         }
     }
-
-
 
     /* Event  Handler Functions Definitions */
 
@@ -86,11 +68,10 @@ class Home extends Component {
         this.setState({imagecomment: e.target.value});
     }
 
-   addCommentOnClickHandler = (e) => {
+    addCommentOnClickHandler = (e) => {
         this.setState({addedComment :this.state.imagecomment});
-       
-}
-    
+
+    }
 
     /*Code written to make two API calls as per the definitions provided in problem statement */
 
@@ -102,7 +83,6 @@ class Home extends Component {
         let that = this;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                //console.log(this.responseText);
                 that.setState({
                     ownerInfo: JSON.parse(this.responseText).data
 
@@ -121,31 +101,23 @@ class Home extends Component {
                 console.log(this.responseText);
                 that.setState({
                     mediaInfo: JSON.parse(this.responseText).data
-                    //unixDateTimestamp :JSON.parse(this.responseText).data.created_time
-                    
                 });
             }
         })
         xhrMediaData.open("GET", this.props.baseUrl + "media/recent/?access_token=13521022383.d5e23ae.c9785a17269b494eb996c2cbc490a6f3");
         xhrMediaData.send(mediaData);
-       
+
     }
 
     /* Rendering JSX elements on the Login Page as per the design requirements */
 
-    /* Inside CARD CONTENT */
-    /* display hash tags and comments only if there are any IMP */
-    /* Caption.text must be displayed */
-    /* hash Tags  colour should be correct and multiple tags must be seperated by space*/
-
-
     render() {
-        
+
         const {classes} = this.props;
 
         return (
             <div>
-            
+                <Header/>
                 <div className= "cardStyle">
                     <br />
                     <GridList cellHeight={"auto"} className={classes.gridListMain} cols={2}>
@@ -154,46 +126,46 @@ class Home extends Component {
                             <GridListTile key={"image" + image.id} cols={image.cols || 1}>
                                 <Grid container className={classes.root} spacing={16}>
                                     <Grid item>
-                                    <Card className={classes.card}>
+                                        <Card className={classes.card}>
 
-                                        <CardHeader 
-                                            avatar={
-                                                <Avatar className={classes.bigAvatar}>
-                                                    <img src={image.user.profile_picture} alt={"logo"} /></Avatar>
-                                            }
-                                            title={image.user.username}
-                                            subheader={image.created_time} />
+                                            <CardHeader
+                                                avatar={
+                                                    <Avatar className={classes.bigAvatar}>
+                                                        <img src={image.user.profile_picture} alt={"logo"} /></Avatar>
+                                                }
+                                                title={image.user.username}
+                                                subheader={image.created_time} />
 
 
-                                        <CardContent>
-                                            <img src={image.images.standard_resolution.url} alt={image.text} className="image-properties" />
-                                            <hr />
-                                            <Typography>{image.text}</Typography>
-                                            <Typography><div className="hash-tags">#{image.tags}</div></Typography>
-                                            <div className="likesFont">
-                                            <Typography variant="h5" >
-                                            <img src={hearticon} alt={"heartlogoTransparent"}   onClick={() => this.iconClickHandler} />
-                                              {image.likes.count} Likes</Typography></div>
-                                            <br /><br />
-                                            <FormControl >
-                                            <FormHelperText className={this.state.addComment}><div><Typography>: {this.state.addedComment}</Typography></div></FormHelperText>
-                                            </FormControl>
-                                            <br/>
-                                            <br/>
-                                            <FormControl>
-                                                <InputLabel htmlFor="imagecomment">Add a Comment</InputLabel>
-                                                <Input id="imagecomment" type="text" onChange={this.imageCommentOnChangeChangeHandler} />
+                                            <CardContent>
+                                                <img src={image.images.standard_resolution.url} alt={image.text} className="image-properties" />
+                                                <hr />
+                                                <Typography>{image.text}</Typography>
+                                                <Typography><div className="hash-tags">#{image.tags}</div></Typography>
+                                                <div className="likesFont">
+                                                    <Typography variant="h5" >
+                                                        <img src={hearticon} alt={"heartlogoTransparent"}   onClick={() => this.iconClickHandler} />
+                                                        {image.likes.count} Likes</Typography></div>
+                                                <br /><br />
+                                                <FormControl >
+                                                    <FormHelperText className={this.state.addComment}><div><Typography>: {this.state.addedComment}</Typography></div></FormHelperText>
                                                 </FormControl>
-                                            <Button id="addedcomment" variant="contained" color="primary" onClick={this.addCommentOnClickHandler}>ADD</Button>
-                                        </CardContent>
+                                                <br/>
+                                                <br/>
+                                                <FormControl>
+                                                    <InputLabel htmlFor="imagecomment">Add a Comment</InputLabel>
+                                                    <Input id="imagecomment" type="text" onChange={this.imageCommentOnChangeChangeHandler} />
+                                                </FormControl>
+                                                <Button id="addedcomment" variant="contained" color="primary" onClick={this.addCommentOnClickHandler}>ADD</Button>
+                                            </CardContent>
 
-                                    </Card>
-                                    
+                                        </Card>
+
                                     </Grid>
-                                    </Grid>
-                        </GridListTile>
-                         ))};
-                         
+                                </Grid>
+                            </GridListTile>
+                        ))};
+
                     </GridList>
 
                 </div>

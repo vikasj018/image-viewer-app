@@ -1,7 +1,4 @@
-function convert(){
-
-    // Unixtimestamp
-    var unixtimestamp = document.getElementById('timestamp').value;
+function convert(unixtimestamp ){
 
     // Months array
     var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -30,6 +27,6 @@ function convert(){
     // Display date time in MM-dd-yyyy h:m:s format
     var convdataTime = month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 
-    document.getElementById('datetime').innerHTML = convdataTime;
+    return convdataTime;
 
 }
